@@ -1,0 +1,131 @@
+body {
+font-family: 'Roboto', sans-serif; /* Modern font */
+background-image: url('../imagenes/IMG2.JPG'); /* Keep the background image */
+background-size: cover; /* Adjusts image to cover the entire background */
+background-position: center; /* Center the background image */
+background-repeat: no-repeat; /* Prevents image repetition */
+margin: 0; /* Removes default margin */
+height: 100vh; /* Ensures full height */
+display: flex;
+justify-content: center;
+align-items: center; /* Centers the login box vertically and horizontally */
+}
+
+/* Login container styling */
+.container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh; /* Full height */
+}
+
+/* Box for login form */
+.login-box {
+background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent white */
+padding: 40px; /* Add more padding for space */
+border-radius: 15px; /* Rounded corners */
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+text-align: center;
+min-width: 300px; /* Ensures a minimum width */
+width: 400px; /* Adjust width */
+animation: fadeIn 1s ease-in-out; /* Smooth fade-in effect */
+}
+
+/* Header of the login box */
+.header h2 {
+font-size: 24px;
+margin-bottom: 20px;
+color: #333; /* Dark color for text */
+}
+
+/* Styling for the logo and icon */
+.logo-container {
+position: relative;
+display: flex;
+justify-content:center;
+align-items: center;
+gap: 0;
+margin-bottom: 20px;
+}
+
+.logo {
+width: 250px;
+height: 20;
+position: absolute;
+top: -350px;
+z-index: 10;
+}
+
+.icon-img {
+width: 70px;
+height: auto;
+}
+
+/* Input fields styling */
+input[type="text"], input[type="password"] {
+width: 90%;
+padding: 12px;
+margin-bottom: 20px; /* More space between inputs */
+border: 2px solid #5f4100;
+border-radius: 8px;
+font-size: 16px; /* Larger text for inputs */
+transition: border 0.3s ease; /* Smooth transition for border */
+}
+
+/* Focus state for input fields */
+input[type="text"]:focus, input[type="password"]:focus {
+border-color: #4d1408; /* Blue color on focus */
+outline: none; /* Remove the default outline */
+}
+
+/* Login button */
+.login-button {
+width: 70%;
+padding: 12px;
+background-color: #5f4100;
+color: white;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-size: 16px;
+transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+/* Button hover effect */
+.login-button:hover {
+background-color: #4d1408; /* Change to green on hover */
+}
+
+/* Forgot password link */
+.forgot-password {
+display: block;
+margin: 10px 0;
+text-decoration: none;
+color: #007bff;
+font-size: 14px;
+}
+
+.forgot-password:hover {
+text-decoration: underline; /* Underline on hover */
+}
+
+/* Register link at the bottom */
+.register-link {
+margin-top: 15px;
+font-size: 14px;
+}
+
+.register-link a {
+text-decoration: none;
+color: #007bff;
+}
+
+.register-link a:hover {
+text-decoration: underline; /* Underline on hover */
+}
+
+/* Animation for login box */
+@keyframes fadeIn {
+0% { opacity: 0; transform: translateY(20px); }
+100% { opacity: 1; transform: translateY(0); }
+}

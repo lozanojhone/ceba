@@ -1,0 +1,429 @@
+body {
+  background-color: rgb(236, 218, 178);
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #001F54;
+  margin: 10px 0;
+  width: 100%;
+}
+
+/* Efecto de transición general para los elementos del menú lateral */
+.sidebar {
+  height: 100%;
+  width: 250px; /* Mantén un ancho fijo */
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: None;
+  background-image: url('../img/IMG1.jpg'); /* Imagen de fondo */
+  background-size: cover;
+  background-position: center;
+  overflow-x: hidden;
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Suave transición */
+  padding-top: 10px;
+}
+
+.openbtn {
+  width: 40px;  /* Ajusta el tamaño del botón */
+  height: 40px;
+  cursor: pointer;
+  border: none;
+  background: transparent; /* Quita cualquier color de fondo */
+  position: fixed;
+  top: 20px;
+  left: 270px; /* Posición inicial del botón */
+  transition: left 0.5s; /* Suave transición */
+  z-index: 2;
+  padding: 0; /* Elimina cualquier espacio interior adicional */
+}
+
+
+/* Clase para ocultar el menú */
+.sidebar-hidden {
+  transform: translateX(-250px); /* Mueve el menú lateral fuera de la vista */
+  opacity: 0; /* Hace que todo se desvanezca */
+}
+
+.profile-section,
+.menu-section {
+  transition: opacity 0.5s ease-in-out; /* Suave transición de opacidad */
+}
+
+.sidebar-hidden .profile-section,
+.sidebar-hidden .menu-section {
+  opacity: 0; /* Oculta los elementos sin desordenarlos */
+}
+
+/* Estilo del perfil */
+.profile-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 140px;
+  border-radius: 50%; /* Hace que la imagen sea circular */
+  margin-bottom: 1spx;
+}
+
+.profile-name {
+  font-family: 'Arial', sans-serif;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  margin: 0;
+}
+
+/* Estilo del botón de mensajes */
+.menu-section {
+  padding: 60px;
+}
+
+.menu-button {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  background: none;
+  color: #ffffff; /* Color del texto */
+  text-decoration: none;
+  font-size: 14px;
+  padding: 0.5em 0.5em; /* Aumentado para igualar el estilo */
+  border: 2px solid #fff; /* Borde blanco */
+  border-radius: 12px; /* Bordes redondeados */
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s; /* Transición suave */
+  background-color: rgb(248, 149, 25); /* Color de fondo */
+  font-weight: bolder; /* Negrita */ /*box-shadow: 0 2px 0 2px #000; /* Sombra del botón */
+  width: 120px; /* Tamaño fijo del botón */
+  height: 40px; /* Altura fija del botón */
+  box-sizing: border-box; /* Asegura que padding y bordes no alteren las dimensiones */
+  margin-bottom: 30px; /* Espacio entre botones */
+}
+
+.menu-button:last-child {
+  margin-bottom: 0; /* Evitar margen en el último botón */
+}
+
+.menu-button:before {
+  content: "";
+  position: absolute;
+  width: 100px; /* Ancho del fondo en movimiento */
+  height: 120%; /* Altura del fondo en movimiento */
+  background-color: #FFA500; /* Color del fondo en movimiento */
+  top: 50%;
+  transform: skewX(30deg) translate(-150%, -50%); /* Transformación inicial */
+  transition: all 0.5s; /* Transición suave */
+}
+
+.menu-button:hover {
+  background-color: #ffffff; /* Color de fondo al hacer hover */
+  color: #FFA500; /* Color del texto al hacer hover */
+  box-shadow: 0 2px 0 2px #0d3b66; /* Sombra del botón al hacer hover */
+}
+
+.menu-button:hover::before {
+  transform: skewX(30deg) translate(150%, -50%); /* Movimiento del fondo al hacer hover */
+  transition-delay: 0.1s; /* Retraso de la transición */
+}
+
+.menu-button:active {
+  transform: scale(0.9); /* Escala del botón al hacer clic */
+}
+
+.icon, .icon2 {
+  width: 20px; /* Tamaño uniforme para íconos */
+  height: 20px; /* Tamaño uniforme para íconos */
+  margin-right: 5px;
+}
+
+/* Ajustes para el contenido principal */
+#main-content {
+  transition: margin-left 0.5s; /* Transición suave cuando el contenido se mueve */
+  padding: 78px;
+  margin-left: 195px; /* Mueve el contenido hacia la derecha, debajo del botón */
+}
+
+/* Cuando el menú esté oculto */
+#main-content.expanded {
+  margin-left: 60px; /* Ajusta según el tamaño del botón cuando el menú esté oculto */
+}
+
+/* Estilo para la sección de bienvenida */
+.welcome-section {
+  background: linear-gradient(to right, #af7825, #695425); /* Fondo degradado atractivo */
+  color: #fff; /* Color blanco para el texto */
+  padding: 15px 40px; /* Espaciado alrededor del texto */
+  border-radius: 8px; /* Bordes redondeados */
+  margin-bottom: 20px; /* Separación inferior */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+  text-align: center; /* Centra el texto */
+}
+
+/* Estilo para el título dentro de la sección de bienvenida */
+.welcome-section h2 {
+  font-family: 'Arial', sans-serif;
+  font-size: 2.5em; /* Tamaño de fuente grande */
+  font-weight: bold; /* Negrita para resaltar el título */
+  letter-spacing: 2px; /* Espaciado entre letras */
+  margin-bottom: 15px; /* Espacio debajo del título */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra al texto para hacerlo más visible */
+}
+
+/* Estilo para el párrafo de la bienvenida */
+.welcome-section p {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.2em; /* Tamaño de fuente moderado */
+  color: #f0f0f0; /* Color gris claro */
+  line-height: 1.6; /* Espaciado entre líneas */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Sombra sutil en el texto */
+}
+
+.logout-button-container {
+  position: absolute;
+  top: 20px; /* Ajusta según la posición exacta deseada */
+  right: 67px; /* Ajusta según la posición exacta deseada */
+}
+
+.logout-button {
+  font-family: 'Arial', sans-serif;
+  color: #000000; /* Color del texto */
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+  background: transparent;
+}
+
+.logout-button:hover {
+  background-color: #ff0000; /* Color más oscuro o diferente en hover */
+  color: #fff; /* Cambia el color del texto a blanco en hover */
+}
+
+.logout-icon {
+  width: 22px;
+  height: 22px;
+  margin-right: 5px;
+}
+
+/* Contenedor general de los iconos (contenedores) */
+.tile-container {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 3 columnas flexibles */
+  flex-direction: column; /* ← Esto hace que los tiles se acomoden en vertical */
+  grid-gap: 10px;
+  gap: 40px; /* Espacio entre las columnas */
+  justify-items: center;  /* Centra los elementos en la cuadrícula */
+  padding: 40px;
+  margin-left: 60px; /* Ajuste para alinearlo con el botón de menú */
+}
+
+/* Contenedores individuales (los "tiles") */
+.tile {
+  width: 230px;
+  height: 230px;
+  margin: 10px;
+  background-color: #fefffd;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.10s ease; /* Transición más suave */
+  position: relative;
+  z-index: 1; /* Asegura que el contenedor esté por encima */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  border: none; /* Elimina el borde del botón */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+
+
+/* Efecto de hover para el tile seleccionado */
+.tile:hover {
+  transform: scale(1.2) translateY(-10px); /* Efecto de flotación */
+  background-color: rgba(0, 0, 0, 0.6); /* Más oscuro al pasar el mouse */
+  transition: background-color 0.8s ease; /* Asegúrate de que la transición esté aquí también */
+  z-index: 2; /* Aumenta el índice z para que esté por encima */
+}
+
+/* Títulos y iconos */
+.tile-title {
+  font-family: 'Arial', sans-serif;
+  color: rgb(255, 255, 255); /* Color del texto */
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.tile-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tile-image {
+  width: 90px; /* Tamaño de la imagen dentro del contenedor */
+  height: auto;
+  margin-bottom: 5px;
+}
+
+.tile-icon p {
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  color: #000000;
+  font-weight: bold; /* Cambia a negrita */
+}
+
+.tile-icon p:hover {
+  color: #ffffff; /* Cambia a colors al pasar el mouse */
+}
+
+.tile.blur {
+  filter: blur(4px); /* Desenfoque de otros contenedores */
+  transform: scale(0.9); /* Reduce el tamaño de los contenedores no seleccionados */
+  transition: filter 0.4s ease, transform 0.4s ease; /* Transición suave para el desenfoque y */
+}
+
+/* Estilos para el fondo del modal */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que esté al frente */
+}
+
+/* Estilos para el contenido del modal */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para los botones del modal */
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal-button.confirm {
+  background-color: #ff0000; /* Verde para confirmar */
+  color: #fff;
+}
+
+.modal-button.cancel {
+  background-color: #28a745; /* Rojo para cancelar */
+  color: #fff;
+}
+
+.modal-button:hover {
+  opacity: 0.8; /* Efecto hover */
+}
+
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
+  /* En pantallas pequeñas, el menú cubre toda la pantalla inicialmente */
+  .sidebar {
+    width: 100%; /* Ocupa el 100% del ancho en pantallas pequeñas */
+    height: 100%; /* Ocupa el 100% del alto */
+  }
+
+  #main-content {
+    margin-left: 0; /* Sin margen cuando el menú esté oculto */
+    display: none; /* Oculto por defecto en pantallas pequeñas */
+  }
+
+  /* Mostrar el contenido y ocultar el menú cuando se presione el botón */
+  #main-content.expanded {
+    display: block; /* Mostrar el contenido cuando el menú esté oculto */
+    margin-right: 50px; /* Mueve el contenido hacia la derecha, debajo del botón */
+  }
+
+  /* Aseguramos que el contenedor use flex y alinee los elementos al centro */
+  .tile-container {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en una columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
+    padding: 20px;
+    margin: 0 auto; /* Asegura que el contenedor esté centrado */
+  }
+
+  /* Ajustamos el tamaño de los contenedores individuales para pantallas pequeñas */
+  .tile {
+    width: 150%; /* Ocupa la mayor parte de la pantalla */
+    height: auto; /* Deja que la altura se ajuste automáticamente */
+    margin-bottom: 20px; /* Espacio entre los elementos */
+    text-align: center; /* Alinea el texto dentro del tile al centro */
+  }
+
+  /* Botón de la flecha */
+  .openbtn {
+    top: 10px; /* Ajusta esta propiedad hasta que esté en el lugar exacto del círculo */
+    left: 300px; /* Ajusta esta propiedad también según sea necesario */
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  /* Contenedor del mensaje */
+  .menu-button {
+    display: flex;
+    flex-direction: column; /* Coloca el ícono y el texto del mensaje en columna */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+    margin-top: 10px; /* Espacio entre botones */
+    width: 50px; /* Ancho fijo para ambos botones */
+    height: 50px; /* Alto fijo para ambos botones */
+    padding: 10px;
+    position: absolute; /* Ubica el mensaje en una posición específica de la pantalla */
+    top: 300px; /* Ajusta según sea necesario para la posición vertical */
+    left: 50%;
+    transform: translateX(-50%); /* Asegura que esté centrado horizontalmente */
+    z-index: 100; /* Asegura que esté sobre otros elementos */
+  }
+
+  /* Estilos adicionales para el ícono de mensaje */
+  .icon, .icon2 {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+  }
+  
+
+  /* Opcional: Estilo específico para el segundo botón si necesitas más separación */
+  .menu-button:nth-child(2) {
+    margin-top: 100px; /* Ajusta la separación del segundo botón */
+}
+}

@@ -1,0 +1,248 @@
+/* Establecer un ancho para la columna de descripción */
+
+table th:nth-child(6), /* Selecciona la sexta columna (Descripción) en el encabezado */
+table td:nth-child(6) { /* Selecciona la sexta columna (Descripción) en las filas */
+    width: 150px; /* Ajusta el valor según el ancho que desees */
+    text-align: center; /* Centra el contenido de la celda */
+}
+
+table th:nth-child(7), /* Selecciona la sexta columna (Descripción) en el encabezado */
+table td:nth-child(7) { /* Selecciona la sexta columna (Descripción) en las filas */
+    width: 230px; /* Ajusta el valor según el ancho que desees */
+    text-align: center; /* Centra el contenido de la celda */
+}
+
+table th:nth-child(4), /* Selecciona la sexta columna (Descripción) en el encabezado */
+table td:nth-child(4) { /* Selecciona la sexta columna (Descripción) en las filas */
+    width: 150px; /* Ajusta el valor según el ancho que desees */
+    text-align: center; /* Centra el contenido de la celda */
+}
+
+
+/* Estilo para el botón Ver */
+.ver-descripcion {
+    background-color: #0a6ddf;
+    color: white;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center; /* Asegura que el texto esté centrado */
+}
+
+/* Estilo al pasar el mouse sobre el botón */
+.ver-descripcion:hover {
+    background-color: #4a90e2;
+}
+
+/* Alineación del botón dentro de la celda */
+.descripcion {
+    text-align: center;
+}
+
+/* General Styles */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #357ce6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    width: 100%;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #4a90e2;
+    margin-bottom: 20px;
+}
+
+/* Search Container */
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    /* Reducir el tamaño del buscador */
+    flex: 0 0 200px; /* Ancho fijo más pequeño */
+    padding: 8px 12px;
+    font-size: 0.95em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.search-container input:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+.search-container button {
+    padding: 8px 16px;
+    font-size: 0.95em;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.search-container button:hover {
+    background-color: #357ab8;
+    transform: translateY(-2px);
+}
+
+.search-container button:active {
+    transform: translateY(0);
+}
+
+/* Table Container for Horizontal Scroll */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px; /* Asegura un ancho mínimo para mantener la legibilidad */
+}
+
+thead {
+    background-color: #4a90e2;
+    color: #fff;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    /* Mantener texto en una sola línea por defecto */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table th {
+    position: sticky;
+    top: 0;
+    background-color: #4a90e2;
+    z-index: 2;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Permitir el ajuste de texto solo en la columna "Descripción" */
+td.descripcion {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    /* Hacer la columna "Descripción" más ancha */
+    width: 250px;
+}
+
+/* Evitar el ajuste de texto en la columna "Correo" */
+td.email {
+    white-space: nowrap;
+    /* Asignar un ancho fijo */
+    width: 200px;
+}
+
+/* Button Styles within Table */
+table button {
+    padding: 6px 12px;
+    margin-right: 5px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+table button.editar {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+table button.editar:hover {
+    background-color: #ec971f;
+    transform: translateY(-2px);
+}
+
+table button.eliminar {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+table button.eliminar:hover {
+    background-color: #c9302c;
+    transform: translateY(-2px);
+}
+
+table button.imprimir {
+    background-color: #5bc0de;
+    color: #fff;
+}
+
+table button.imprimir:hover {
+    background-color: #31b0d5;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-container input {
+        flex: 0 0 100%; /* Ancho completo en móviles */
+    }
+
+    table th, table td {
+        padding: 10px;
+    }
+
+    table button {
+        margin-bottom: 5px;
+    }
+
+    /* Ajuste de ancho mínimo para pantallas pequeñas */
+    table {
+        min-width: 800px;
+    }
+
+    /* Ajustar ancho de la columna "Descripción" en móviles */
+    td.descripcion {
+        width: 200px;
+    }
+
+    /* Ajustar ancho de la columna "Correo" en móviles */
+    td.email {
+        width: 150px;
+    }
+}

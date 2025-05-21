@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Almacén</title>
+    <link rel="stylesheet" href="styles0.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="header">
+                <h1>SISTEMA DE ALMACÉN</h1>
+                <div class="logo-container">
+                    <img src="../imagenes/Logo.png" alt="Logo" class="logo">
+                    <img src="../imagenes/icono.png" alt="user-icon" class="icon-img">
+                </div>
+            </div>
+
+            <h2>Inicio de sesión</h2>
+
+            <form id="login-form" action="login_process.php" method="POST">
+                <label for="login-name">Usuario</label>
+                <input type="text" placeholder="Nombre de Usuario" id="login-name" name="login-name" required>
+
+                <label for="login-pass">Contraseña</label>
+                <input type="password" placeholder="************" id="login-pass" name="login-pass" required>
+
+                <input type="submit" value="Iniciar sesión" class="login-button">
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>
