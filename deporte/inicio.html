@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tv en vivo</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <header>
+        <h1>📺 TV en Vivo - Fútbol y Entretenimiento ⚽</h1>
+    </header>
+    <div class="container">
+        <div class="grid">
+            <div class="card"><img src="ligamax.jpeg" alt="LIGA1MAX"><h3>LIGA1MAX</h3><p>Ver LIGA1MAX online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=liga1max" frameborder="0" allowfullscreen></iframe></div>
+            <div class="card"><img src="dsports.png" alt="DSports"><h3>DSports</h3><p>Ver DSports online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=dsports" frameborder="0" allowfullscreen></iframe></div>
+            <div class="card"><img src="espn.png" alt="ESPN"><h3>ESPN</h3><p>Ver ESPN online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=espn" frameborder="0" allowfullscreen></iframe></div>
+            <div class="card"><img src="espn2.png" alt="ESPN2"><h3>ESPN2</h3><p>Ver ESPN2 online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=espn2" frameborder="0" allowfullscreen></iframe></div>
+            <div class="card"><img src="espn3.png" alt="ESPN3"><h3>ESPN3</h3><p>Ver ESPN3 online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=espn3" frameborder="0" allowfullscreen></iframe></div>
+            <div class="card"><img src="tycsports.png" alt="TyC Sports"><h3>TyC Sports</h3><p>Ver TyC Sports online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=tycsports" frameborder="0" allowfullscreen></iframe></div>
+            <div class="card"><img src="tntsports.png" alt="TNT Sports"><h3>TNT Sports</h3><p>Ver TNT Sports online en vivo y en directo.</p><iframe src="https://streamtp3.com/global1.php?stream=tntsports" frameborder="0" allowfullscreen></iframe></div>
+
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Ver Canales de Fútbol. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+  // Verificación en carga para bloquear acceso si no está autenticado
+  if (sessionStorage.getItem("logueado") !== "true") {
+    alert("Debe iniciar sesión para acceder a esta página.");
+    window.location.href = "index.html"; // página de login
+  }
+
+  // Función para cerrar sesión
+  function cerrarSesion() {
+    sessionStorage.removeItem("logueado");
+    window.location.href = "index.html"; // vuelve a login
+  }
+
+  // Función para mostrar/ocultar contenido adicional
+  document.querySelector('.btn-ver-mas').addEventListener('click', () => {
+    document.getElementById('contenidoFutbol').classList.toggle('hidden');
+  });
+</script>
+
+</body>
+</html>

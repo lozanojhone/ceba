@@ -1,0 +1,169 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo cuerpo */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* tipografía moderna y legible */
+  background-color: #111; /* fondo oscuro para contraste */
+  color: #fff;
+  line-height: 1.6;
+}
+
+/* Encabezado */
+header {
+  background: linear-gradient(90deg, #00cc66, #00994d); /* tonos verdes vibrantes */
+  padding: 25px;
+  text-align: center;
+}
+header h1 {
+  font-size: 2.5rem;
+  color: #fff;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+/* Menú navegación */
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: #222; /* negro para contraste */
+  padding: 15px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+nav a {
+  color: #00ff66; /* verde deportivo */
+  margin: 0 20px;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+nav a:hover {
+  background-color: #00ff66;
+  color: #111;
+  transform: scale(1.05);
+}
+
+/* Sección hero para bienvenida */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  margin: 20px;
+  background: linear-gradient(135deg, #111, #222);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+}
+.hero:hover {
+  box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+}
+.hero-text {
+  flex: 1;
+  min-width: 250px;
+  max-width: 500px;
+  padding: 20px;
+  text-align: center;
+}
+.hero-text h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #00ff66; /* color vibrante, relacionado al césped */
+  font-weight: bold;
+}
+.hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+.btn-ver-mas {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #00ff66;
+  color: #111;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.btn-ver-mas:hover {
+  background-color: #009944;
+  transform: scale(1.05);
+}
+
+/* Imagen destacada en la sección hero */
+.hero-img img {
+  width: 300px; /* tamaño fijo de ancho */
+  height: 200px; /* tamaño fijo de altura */
+  object-fit: cover; /* para que la imagen rellene sin distorsionarse, recortando si es necesario */
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Contenido adicional oculto */
+#contenidoFutbol {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #222, #111);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+#contenidoFutbol h3 {
+  color: #00ff66;
+  margin-bottom: 10px;
+}
+#contenidoFutbol p {
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+/* Pie de página */
+footer {
+  background-color: #111;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  border-top: 3px solid #00ff66;
+  font-size: 0.9rem;
+}
+
+/* Botón "Ver más" */
+#verMas {
+  padding: 12px 30px;
+  background-color: #00ff66;
+  color: #111;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+#verMas:hover {
+  background-color: #009944;
+  transform: scale(1.05);
+}
+
+/* Responsive para pantallas chicas */
+@media(max-width: 768px){
+  .hero {
+    flex-direction: column;
+  }
+  nav {
+    flex-direction: column;
+  }
+  nav a {
+    margin: 10px 0;
+  }
+}
