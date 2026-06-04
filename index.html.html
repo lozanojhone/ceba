@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copa Dorada 2025 - Campeonato de Fútbol</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --verde: #1a6b2e;
+    --verde2: #27a844;
+    --verde3: #4edd74;
+    --dorado: #f5c518;
+    --dorado2: #e8a800;
+    --negro: #0d0d0d;
+    --gris: #1c1c1c;
+    --gris2: #2a2a2a;
+    --gris3: #3a3a3a;
+    --texto: #f0f0e8;
+    --texto2: #b0b09a;
+    --blanco: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--negro); color: var(--texto); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(13,13,13,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--verde); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 64px; }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--dorado); letter-spacing: 2px; }
+  .nav-logo span { color: var(--verde2); }
+  .nav-links { display: flex; gap: 0.2rem; }
+  .nav-links a { color: var(--texto2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: all 0.2s; cursor: pointer; }
+  .nav-links a:hover, .nav-links a.active { color: var(--dorado); background: rgba(245,197,24,0.1); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { width: 24px; height: 2px; background: var(--texto); transition: all 0.3s; }
+  .nav-mobile { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--negro); border-bottom: 1px solid var(--verde); padding: 1rem; flex-direction: column; gap: 0.5rem; z-index: 999; }
+  .nav-mobile a { color: var(--texto2); text-decoration: none; padding: 0.75rem 1rem; border-radius: 4px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+  .nav-mobile a:hover { color: var(--dorado); background: rgba(245,197,24,0.1); }
+  @media(max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
+
+  /* PAGES */
+  .page { display: none; padding-top: 64px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { position: relative; height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, #0d0d0d 0%, #0a2010 50%, #0d0d0d 100%); }
+  .hero-bg { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(26,107,46,0.07) 50px, rgba(26,107,46,0.07) 51px), repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(26,107,46,0.07) 50px, rgba(26,107,46,0.07) 51px); }
+  .hero-circle { position: absolute; width: 600px; height: 600px; border: 1px solid rgba(245,197,24,0.08); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .hero-circle2 { position: absolute; width: 800px; height: 800px; border: 1px solid rgba(39,168,68,0.06); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .hero-content { position: relative; text-align: center; z-index: 1; padding: 2rem; }
+  .hero-badge { display: inline-block; background: rgba(245,197,24,0.15); border: 1px solid rgba(245,197,24,0.4); color: var(--dorado); font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 0.4rem 1.2rem; border-radius: 2px; margin-bottom: 1.5rem; }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 10vw, 7rem); color: var(--blanco); line-height: 0.9; margin-bottom: 0.5rem; }
+  .hero-title span { color: var(--dorado); display: block; }
+  .hero-subtitle { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--verde2); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2rem; }
+  .hero-info { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+  .hero-info-item { text-align: center; }
+  .hero-info-item .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--texto2); }
+  .hero-info-item .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--dorado); }
+  .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--dorado); color: var(--negro); font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.85rem 2rem; border: none; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+  .btn-primary:hover { background: var(--dorado2); transform: translateY(-2px); }
+  .btn-secondary { background: transparent; color: var(--blanco); font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.85rem 2rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: var(--verde2); color: var(--verde2); }
+
+  /* GALLERY */
+  .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-label { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--verde2); font-weight: 700; margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); color: var(--blanco); }
+  .section-title span { color: var(--dorado); }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 1rem; }
+  .gallery-item { background: var(--gris2); border-radius: 4px; overflow: hidden; position: relative; cursor: pointer; }
+  .gallery-item:first-child { grid-column: 1 / 3; grid-row: 1 / 2; }
+  .gallery-item .gallery-img { width: 100%; aspect-ratio: 16/9; background: var(--gris3); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .gallery-item:first-child .gallery-img { aspect-ratio: 16/7; }
+  .gallery-img svg { opacity: 0.4; }
+  .gallery-img-placeholder { font-size: 3rem; opacity: 0.3; }
+  .gallery-caption { padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--texto2); }
+  @media(max-width:600px) { .gallery-grid { grid-template-columns: 1fr; } .gallery-item:first-child { grid-column: 1; } }
+
+  /* VIDEO SECTION */
+  .video-section { background: var(--gris); margin: 0; padding: 5rem 2rem; }
+  .video-inner { max-width: 1100px; margin: 0 auto; }
+  .video-embed { background: var(--gris2); border-radius: 8px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gris3); position: relative; overflow: hidden; margin-top: 2rem; }
+  .video-placeholder { text-align: center; }
+  .play-btn { width: 70px; height: 70px; background: rgba(245,197,24,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; cursor: pointer; transition: transform 0.2s; }
+  .play-btn:hover { transform: scale(1.1); }
+  .play-btn svg { margin-left: 4px; }
+  .video-placeholder p { color: var(--texto2); font-size: 0.9rem; }
+
+  /* INFO INAUGURACION */
+  .inauguracion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+  .info-card { background: var(--gris); border: 1px solid var(--gris3); border-radius: 8px; padding: 2rem; position: relative; overflow: hidden; }
+  .info-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--dorado); }
+  .info-card.verde::before { background: var(--verde2); }
+  .info-card-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .info-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--dorado); margin-bottom: 0.5rem; }
+  .info-card.verde h3 { color: var(--verde2); }
+  .info-card p { color: var(--texto2); line-height: 1.6; font-size: 0.95rem; }
+  .info-card .value-big { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--blanco); }
+  @media(max-width:600px) { .inauguracion-grid { grid-template-columns: 1fr; } }
+
+  /* CATEGORIAS */
+  .categorias-section { background: var(--gris); padding: 5rem 2rem; }
+  .categorias-inner { max-width: 1100px; margin: 0 auto; }
+  .tab-btns { display: flex; gap: 0.5rem; margin: 2rem 0; flex-wrap: wrap; }
+  .tab-btn { background: transparent; color: var(--texto2); border: 1px solid var(--gris3); padding: 0.6rem 1.5rem; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .tab-btn.active, .tab-btn:hover { background: var(--verde); border-color: var(--verde2); color: var(--blanco); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .equipos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+  .equipo-card { background: var(--gris2); border: 1px solid var(--gris3); border-radius: 8px; padding: 1.5rem; text-align: center; transition: border-color 0.2s; }
+  .equipo-card:hover { border-color: var(--verde2); }
+  .equipo-escudo { width: 60px; height: 60px; background: var(--verde); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--dorado); }
+  .equipo-card h4 { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .equipo-card p { font-size: 0.8rem; color: var(--texto2); }
+  .calendario-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--dorado); margin-bottom: 1rem; }
+  .partido { display: flex; align-items: center; justify-content: space-between; background: var(--gris2); border: 1px solid var(--gris3); border-radius: 6px; padding: 1rem 1.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+  .partido-equipos { display: flex; align-items: center; gap: 1rem; font-weight: 600; }
+  .partido-vs { color: var(--dorado); font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; }
+  .partido-info { text-align: right; }
+  .partido-info .fecha { font-size: 0.8rem; color: var(--texto2); }
+  .partido-info .resultado { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--verde2); }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 2px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .badge-pendiente { background: rgba(245,197,24,0.15); color: var(--dorado); border: 1px solid rgba(245,197,24,0.3); }
+  .badge-jugado { background: rgba(39,168,68,0.15); color: var(--verde2); border: 1px solid rgba(39,168,68,0.3); }
+
+  /* COMIDA */
+  .comida-section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .puestos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .puesto-card { background: var(--gris); border: 1px solid var(--gris3); border-radius: 12px; overflow: hidden; transition: transform 0.2s; }
+  .puesto-card:hover { transform: translateY(-4px); }
+  .puesto-img { height: 160px; background: var(--gris2); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+  .puesto-body { padding: 1.5rem; }
+  .puesto-badge { display: inline-block; background: rgba(245,197,24,0.15); color: var(--dorado); border: 1px solid rgba(245,197,24,0.3); font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; margin-bottom: 0.75rem; }
+  .puesto-body h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .puesto-body p { font-size: 0.85rem; color: var(--texto2); margin-bottom: 1rem; line-height: 1.5; }
+  .menu-items { list-style: none; }
+  .menu-items li { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.35rem 0; border-bottom: 1px solid var(--gris3); }
+  .menu-items li:last-child { border-bottom: none; }
+  .menu-items li .precio { color: var(--verde2); font-weight: 700; }
+  .promo-tag { background: rgba(39,168,68,0.15); color: var(--verde2); border: 1px solid rgba(39,168,68,0.3); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 2px; margin-top: 0.75rem; display: inline-block; }
+
+  /* INSCRIPCION */
+  .inscripcion-section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+  .form-card { background: var(--gris); border: 1px solid var(--gris3); border-radius: 12px; padding: 2.5rem; }
+  .form-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--dorado); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gris3); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--texto2); }
+  .form-group input, .form-group select { background: var(--gris2); border: 1px solid var(--gris3); border-radius: 4px; color: var(--texto); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 0.65rem 1rem; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--verde2); }
+  .form-group input::placeholder { color: var(--texto2); opacity: 0.6; }
+  .form-group select option { background: var(--gris2); }
+  .jugadores-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+  .jugadores-table th { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: var(--texto2); text-align: left; padding: 0.5rem 0.75rem; background: var(--gris2); }
+  .jugadores-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--gris3); }
+  .jugadores-table td input { width: 100%; background: transparent; border: 1px solid transparent; border-radius: 4px; color: var(--texto); font-family: 'Barlow', sans-serif; font-size: 0.9rem; padding: 0.4rem 0.5rem; }
+  .jugadores-table td input:focus { outline: none; border-color: var(--verde2); background: var(--gris2); }
+  .tipo-tag { font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 2px; }
+  .tipo-titular { background: rgba(39,168,68,0.2); color: var(--verde2); }
+  .tipo-suplente { background: rgba(245,197,24,0.15); color: var(--dorado); }
+  .form-submit { background: var(--dorado); color: var(--negro); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; padding: 1rem 3rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.2s; margin-top: 1rem; }
+  .form-submit:hover { background: var(--dorado2); }
+  .form-success { display: none; text-align: center; padding: 3rem; }
+  .form-success .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .form-success h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--verde2); margin-bottom: 0.5rem; }
+  .form-success p { color: var(--texto2); }
+  @media(max-width:600px) { .form-row { grid-template-columns: 1fr; } }
+
+  /* ADMIN LOGIN */
+  .admin-login { min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; padding: 2rem; }
+  .login-card { background: var(--gris); border: 1px solid var(--gris3); border-radius: 12px; padding: 3rem; max-width: 400px; width: 100%; }
+  .login-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--dorado); margin-bottom: 0.5rem; }
+  .login-card p { color: var(--texto2); font-size: 0.9rem; margin-bottom: 2rem; }
+  .login-btn { background: var(--verde); color: var(--blanco); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.85rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 1.5rem; transition: background 0.2s; }
+  .login-btn:hover { background: var(--verde2); }
+  .login-error { color: #e24b4b; font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+
+  /* ADMIN PANEL */
+  .admin-panel { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+  .admin-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--dorado); }
+  .admin-logout { background: transparent; color: var(--texto2); border: 1px solid var(--gris3); padding: 0.5rem 1rem; border-radius: 4px; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+  .admin-logout:hover { color: #e24b4b; border-color: #e24b4b; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--gris); border: 1px solid var(--gris3); border-radius: 8px; padding: 1.5rem; }
+  .stat-card .stat-label { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--texto2); margin-bottom: 0.5rem; }
+  .stat-card .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--dorado); line-height: 1; }
+  .stat-card .stat-sub { font-size: 0.8rem; color: var(--verde2); margin-top: 0.25rem; }
+  .search-bar { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .search-bar input { flex: 1; background: var(--gris); border: 1px solid var(--gris3); border-radius: 4px; color: var(--texto); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 0.65rem 1rem; }
+  .search-bar input:focus { outline: none; border-color: var(--verde2); }
+  .admin-table-wrap { overflow-x: auto; }
+  .admin-table { width: 100%; border-collapse: collapse; }
+  .admin-table th { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: var(--texto2); text-align: left; padding: 0.75rem 1rem; background: var(--gris); border-bottom: 1px solid var(--gris3); }
+  .admin-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--gris3); font-size: 0.9rem; }
+  .admin-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .btn-ver { background: transparent; color: var(--verde2); border: 1px solid rgba(39,168,68,0.3); padding: 0.3rem 0.75rem; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+  .btn-ver:hover { background: rgba(39,168,68,0.1); }
+  .btn-pdf { background: rgba(245,197,24,0.15); color: var(--dorado); border: 1px solid rgba(245,197,24,0.3); padding: 0.3rem 0.75rem; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+  .btn-pdf:hover { background: rgba(245,197,24,0.25); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--gris); border: 1px solid var(--gris3); border-radius: 12px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2rem; }
+  .modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; }
+  .modal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--dorado); }
+  .modal-close { background: none; border: none; color: var(--texto2); font-size: 1.5rem; cursor: pointer; line-height: 1; }
+  .modal-close:hover { color: var(--blanco); }
+  .modal-section { margin-bottom: 1.5rem; }
+  .modal-section h4 { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--texto2); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gris3); }
+  .modal-info-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.4rem 0; }
+  .modal-info-row .key { color: var(--texto2); }
+  .modal-jugadores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .modal-jugador { background: var(--gris2); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+  .modal-jugador .num { color: var(--verde2); font-weight: 700; margin-right: 0.5rem; }
+  .modal-jugador .tipo { font-size: 0.7rem; color: var(--texto2); }
+
+  /* ADMIN EMPTY */
+  .admin-empty { text-align: center; padding: 4rem 2rem; color: var(--texto2); }
+  .admin-empty .big { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--gris3); margin-bottom: 0.5rem; }
+
+  /* FOOTER */
+  footer { background: var(--gris); border-top: 1px solid var(--gris3); padding: 2rem; text-align: center; margin-top: 4rem; }
+  footer p { color: var(--texto2); font-size: 0.85rem; }
+  footer .footer-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--dorado); margin-bottom: 0.5rem; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--negro); }
+  ::-webkit-scrollbar-thumb { background: var(--gris3); border-radius: 3px; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--verde); color: var(--blanco); padding: 1rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; z-index: 9999; transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* MEDIA */
+  @media(max-width:480px) {
+    .modal-jugadores-grid { grid-template-columns: 1fr; }
+    .admin-header h2 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Copa <span>Dorada</span> 2025</div>
+  <div class="nav-links">
+    <a onclick="showPage('inicio')" class="active" id="nav-inicio">Inicio</a>
+    <a onclick="showPage('categorias')" id="nav-categorias">Categorías</a>
+    <a onclick="showPage('comida')" id="nav-comida">Comida</a>
+    <a onclick="showPage('inscripcion')" id="nav-inscripcion">Inscripción</a>
+    <a onclick="showPage('admin')" id="nav-admin">Admin</a>
+  </div>
+  <div class="nav-hamburger" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a onclick="showPage('inicio');closeMobileNav()">Inicio</a>
+  <a onclick="showPage('categorias');closeMobileNav()">Categorías</a>
+  <a onclick="showPage('comida');closeMobileNav()">Comida</a>
+  <a onclick="showPage('inscripcion');closeMobileNav()">Inscripción</a>
+  <a onclick="showPage('admin');closeMobileNav()">Admin</a>
+</div>
+
+<!-- PÁGINA INICIO -->
+<div id="page-inicio" class="page active">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">⚽ Inauguración Oficial</div>
+      <h1 class="hero-title">Copa<span>Dorada</span></h1>
+      <div class="hero-subtitle">Campeonato de Fútbol 2025</div>
+      <div class="hero-info">
+        <div class="hero-info-item">
+          <div class="label">Fecha</div>
+          <div class="value">15 Jul 2025</div>
+        </div>
+        <div class="hero-info-item">
+          <div class="label">Hora</div>
+          <div class="value">10:00 AM</div>
+        </div>
+        <div class="hero-info-item">
+          <div class="label">Lugar</div>
+          <div class="value">Est. Municipal</div>
+        </div>
+        <div class="hero-info-item">
+          <div class="label">Equipos</div>
+          <div class="value" id="heroTeamCount">0</div>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('inscripcion')">Inscribir Equipo</button>
+        <button class="btn-secondary" onclick="scrollToGallery()">Ver Galería ↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galería -->
+  <div class="section" id="gallerySection">
+    <div class="section-header">
+      <div class="section-label">Galería</div>
+      <h2 class="section-title">Imágenes del <span>Evento</span></h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <div class="gallery-img" style="background:linear-gradient(135deg,#0a2010,#1a6b2e);">
+          <svg width="120" height="80" viewBox="0 0 120 80"><circle cx="60" cy="40" r="30" fill="none" stroke="#4edd74" stroke-width="2"/><path d="M30 40 L90 40 M60 10 L60 70" stroke="#4edd74" stroke-width="1"/></svg>
+        </div>
+        <div class="gallery-caption">🏟️ Estadio Municipal — Sede principal del campeonato</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img" style="background:linear-gradient(135deg,#1a1a0a,#2a2a10);">
+          <div class="gallery-img-placeholder">🏆</div>
+        </div>
+        <div class="gallery-caption">🏆 Copa oficial del torneo</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img" style="background:linear-gradient(135deg,#0d1a2a,#0a2240);">
+          <div class="gallery-img-placeholder">👕</div>
+        </div>
+        <div class="gallery-caption">👕 Camisetas oficiales</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img" style="background:linear-gradient(135deg,#1a0a0a,#2e1010);">
+          <div class="gallery-img-placeholder">⚽</div>
+        </div>
+        <div class="gallery-caption">⚽ El balón oficial de la Copa Dorada 2025</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img" style="background:linear-gradient(135deg,#0d0d1a,#15153a);">
+          <div class="gallery-img-placeholder">🎉</div>
+        </div>
+        <div class="gallery-caption">🎉 Ceremonia de inauguración 2024</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video -->
+  <div class="video-section">
+    <div class="video-inner">
+      <div class="section-header">
+        <div class="section-label">Promocional</div>
+        <h2 class="section-title">Video <span>Oficial</span></h2>
+      </div>
+      <div class="video-embed">
+        <div class="video-placeholder">
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#0d0d0d"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <p>Video promocional de la Copa Dorada 2025</p>
+          <p style="font-size:0.75rem;margin-top:0.5rem;">Próximamente disponible</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inauguración -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Detalles</div>
+      <h2 class="section-title">Ceremonia de <span>Inauguración</span></h2>
+    </div>
+    <div class="inauguracion-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📅</div>
+        <h3>Fecha</h3>
+        <div class="value-big">15 JUL</div>
+        <p>Martes 15 de julio de 2025. No faltes al evento más importante del año deportivo de nuestra comunidad.</p>
+      </div>
+      <div class="info-card verde">
+        <div class="info-card-icon">🕙</div>
+        <h3>Hora</h3>
+        <div class="value-big">10:00 AM</div>
+        <p>Las puertas abren a las 9:00 AM. La ceremonia de inauguración comienza puntualmente a las 10:00 AM.</p>
+      </div>
+      <div class="info-card verde">
+        <div class="info-card-icon">📍</div>
+        <h3>Lugar</h3>
+        <div class="value-big">EST. MUN.</div>
+        <p>Estadio Municipal Principal. Av. Deportiva 123. Estacionamiento gratuito disponible para todos los asistentes.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🎭</div>
+        <h3>Programa</h3>
+        <p style="margin-top:0.5rem;"><strong style="color:var(--texto);">9:00 AM</strong> — Apertura de puertas<br><strong style="color:var(--texto);">9:30 AM</strong> — Desfile de equipos<br><strong style="color:var(--texto);">10:00 AM</strong> — Ceremonia oficial<br><strong style="color:var(--texto);">10:30 AM</strong> — Partido inaugural<br><strong style="color:var(--texto);">12:00 PM</strong> — Actividades recreativas</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-title">Copa Dorada 2025</div>
+    <p>© 2025 — Campeonato de Fútbol Comunitario. Todos los derechos reservados.</p>
+  </footer>
+</div>
+
+<!-- PÁGINA CATEGORÍAS -->
+<div id="page-categorias" class="page">
+  <div class="categorias-section">
+    <div class="categorias-inner">
+      <div class="section-header">
+        <div class="section-label">Competencias</div>
+        <h2 class="section-title" style="color:var(--blanco);">Categorías <span>Deportivas</span></h2>
+      </div>
+      <div class="tab-btns">
+        <button class="tab-btn active" onclick="showTab('masculino')">⚽ Fútbol Masculino</button>
+        <button class="tab-btn" onclick="showTab('femenino')">⚽ Fútbol Femenino</button>
+        <button class="tab-btn" onclick="showTab('calendario')">📅 Calendario</button>
+        <button class="tab-btn" onclick="showTab('resultados')">📊 Resultados</button>
+      </div>
+
+      <div id="tab-masculino" class="tab-content active">
+        <h3 class="calendario-title">Equipos Masculinos</h3>
+        <div class="equipos-grid">
+          <div class="equipo-card"><div class="equipo-escudo">LO</div><h4>Los Leones</h4><p>Grupo A</p></div>
+          <div class="equipo-card"><div class="equipo-escudo">AG</div><h4>Águilas FC</h4><p>Grupo A</p></div>
+          <div class="equipo-card"><div class="equipo-escudo">TR</div><h4>Titanes Rojos</h4><p>Grupo B</p></div>
+          <div class="equipo-card"><div class="equipo-escudo">ES</div><h4>Estrellas</h4><p>Grupo B</p></div>
+          <div class="equipo-card"><div class="equipo-escudo">GU</div><h4>Guerreros</h4><p>Grupo C</p></div>
+          <div class="equipo-card"><div class="equipo-escudo">PN</div><h4>Panteras Negras</h4><p>Grupo C</p></div>
+        </div>
+      </div>
+      <div id="tab-femenino" class="tab-content">
+        <h3 class="calendario-title">Equipos Femeninos</h3>
+        <div class="equipos-grid">
+          <div class="equipo-card"><div class="equipo-escudo" style="background:var(--dorado2);color:var(--negro);">VA</div><h4>Valquirias FC</h4><p>Grupo A</p></div>
+          <div class="equipo-card"><div class="equipo-escudo" style="background:var(--dorado2);color:var(--negro);">FL</div><h4>Las Flores</h4><p>Grupo A</p></div>
+          <div class="equipo-card"><div class="equipo-escudo" style="background:var(--dorado2);color:var(--negro);">FE</div><h4>Fénix Femenino</h4><p>Grupo B</p></div>
+          <div class="equipo-card"><div class="equipo-escudo" style="background:var(--dorado2);color:var(--negro);">AM</div><h4>Amazonas</h4><p>Grupo B</p></div>
+        </div>
+      </div>
+      <div id="tab-calendario" class="tab-content">
+        <h3 class="calendario-title">Calendario de Partidos</h3>
+        <div class="partido"><div class="partido-equipos"><span>Los Leones</span><span class="partido-vs">VS</span><span>Águilas FC</span></div><div class="partido-info"><div class="fecha">15 Jul 2025 — 10:30 AM</div><div><span class="badge badge-pendiente">Inaugural</span></div></div></div>
+        <div class="partido"><div class="partido-equipos"><span>Titanes Rojos</span><span class="partido-vs">VS</span><span>Estrellas</span></div><div class="partido-info"><div class="fecha">15 Jul 2025 — 12:00 PM</div><div><span class="badge badge-pendiente">Pendiente</span></div></div></div>
+        <div class="partido"><div class="partido-equipos"><span>Valquirias FC</span><span class="partido-vs">VS</span><span>Las Flores</span></div><div class="partido-info"><div class="fecha">15 Jul 2025 — 2:00 PM</div><div><span class="badge badge-pendiente">Pendiente</span></div></div></div>
+        <div class="partido"><div class="partido-equipos"><span>Guerreros</span><span class="partido-vs">VS</span><span>Panteras Negras</span></div><div class="partido-info"><div class="fecha">16 Jul 2025 — 10:00 AM</div><div><span class="badge badge-pendiente">Pendiente</span></div></div></div>
+        <div class="partido"><div class="partido-equipos"><span>Fénix Femenino</span><span class="partido-vs">VS</span><span>Amazonas</span></div><div class="partido-info"><div class="fecha">16 Jul 2025 — 12:00 PM</div><div><span class="badge badge-pendiente">Pendiente</span></div></div></div>
+      </div>
+      <div id="tab-resultados" class="tab-content">
+        <h3 class="calendario-title">Resultados</h3>
+        <div style="text-align:center;padding:3rem;color:var(--texto2);">
+          <div style="font-size:3rem;margin-bottom:1rem;">📊</div>
+          <p>Los resultados se publicarán una vez iniciado el campeonato.</p>
+          <p style="font-size:0.85rem;margin-top:0.5rem;">Vuelve el 15 de julio de 2025.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA COMIDA -->
+<div id="page-comida" class="page">
+  <div class="comida-section">
+    <div class="section-header">
+      <div class="section-label">Gastronomía</div>
+      <h2 class="section-title">Comida y <span>Bebidas</span></h2>
+    </div>
+    <div class="puestos-grid">
+      <div class="puesto-card">
+        <div class="puesto-img">🍔</div>
+        <div class="puesto-body">
+          <span class="puesto-badge">Puesto #1</span>
+          <h3>Burger Champions</h3>
+          <p>Las mejores hamburguesas artesanales, preparadas al momento con ingredientes frescos.</p>
+          <ul class="menu-items">
+            <li><span>Hamburguesa Clásica</span><span class="precio">S/ 12</span></li>
+            <li><span>Hamburguesa Doble</span><span class="precio">S/ 18</span></li>
+            <li><span>Combo + Bebida</span><span class="precio">S/ 20</span></li>
+            <li><span>Papas Fritas</span><span class="precio">S/ 7</span></li>
+          </ul>
+          <span class="promo-tag">🎉 2x1 en Combos hasta las 12 PM</span>
+        </div>
+      </div>
+      <div class="puesto-card">
+        <div class="puesto-img">🍗</div>
+        <div class="puesto-body">
+          <span class="puesto-badge">Puesto #2</span>
+          <h3>Pollo Goleador</h3>
+          <p>Pollo a la brasa y anticuchos preparados en nuestras parrillas especiales.</p>
+          <ul class="menu-items">
+            <li><span>1/4 Pollo a la Brasa</span><span class="precio">S/ 15</span></li>
+            <li><span>1/2 Pollo a la Brasa</span><span class="precio">S/ 25</span></li>
+            <li><span>Anticuchos (6 piezas)</span><span class="precio">S/ 10</span></li>
+            <li><span>Picarones</span><span class="precio">S/ 5</span></li>
+          </ul>
+          <span class="promo-tag">🔥 Familia: 1 pollo + 2 gaseosas S/ 35</span>
+        </div>
+      </div>
+      <div class="puesto-card">
+        <div class="puesto-img">🌮</div>
+        <div class="puesto-body">
+          <span class="puesto-badge">Puesto #3</span>
+          <h3>Sabores del Estadio</h3>
+          <p>Comida criolla y snacks para disfrutar durante los partidos.</p>
+          <ul class="menu-items">
+            <li><span>Papa Rellena</span><span class="precio">S/ 6</span></li>
+            <li><span>Empanadas (2 und)</span><span class="precio">S/ 8</span></li>
+            <li><span>Salchipapas</span><span class="precio">S/ 9</span></li>
+            <li><span>Tamales</span><span class="precio">S/ 5</span></li>
+          </ul>
+          <span class="promo-tag">⭐ Combo snack x4 por S/ 20</span>
+        </div>
+      </div>
+      <div class="puesto-card">
+        <div class="puesto-img">🥤</div>
+        <div class="puesto-body">
+          <span class="puesto-badge">Puesto #4</span>
+          <h3>Bebidas Copa Dorada</h3>
+          <p>Refrescos, jugos naturales y bebidas frías para calmar la sed del campeón.</p>
+          <ul class="menu-items">
+            <li><span>Gaseosa Personal</span><span class="precio">S/ 4</span></li>
+            <li><span>Agua Mineral</span><span class="precio">S/ 3</span></li>
+            <li><span>Jugo Natural</span><span class="precio">S/ 6</span></li>
+            <li><span>Chicha Morada</span><span class="precio">S/ 5</span></li>
+          </ul>
+          <span class="promo-tag">💧 6 aguas por S/ 15</span>
+        </div>
+      </div>
+      <div class="puesto-card">
+        <div class="puesto-img">🍦</div>
+        <div class="puesto-body">
+          <span class="puesto-badge">Puesto #5</span>
+          <h3>Dulces del Arco</h3>
+          <p>Postres, helados y dulces artesanales para toda la familia.</p>
+          <ul class="menu-items">
+            <li><span>Helado 2 bochas</span><span class="precio">S/ 5</span></li>
+            <li><span>Algodón de azúcar</span><span class="precio">S/ 4</span></li>
+            <li><span>Churros con chocolate</span><span class="precio">S/ 7</span></li>
+            <li><span>Paleta de fruta</span><span class="precio">S/ 3</span></li>
+          </ul>
+          <span class="promo-tag">🍦 Niños: Helado + Paleta S/ 6</span>
+        </div>
+      </div>
+      <div class="puesto-card">
+        <div class="puesto-img">☕</div>
+        <div class="puesto-body">
+          <span class="puesto-badge">Puesto #6</span>
+          <h3>Café Penal</h3>
+          <p>Café peruano de especialidad, desayunos y sandwiches para empezar el día.</p>
+          <ul class="menu-items">
+            <li><span>Café Americano</span><span class="precio">S/ 5</span></li>
+            <li><span>Cappuccino</span><span class="precio">S/ 7</span></li>
+            <li><span>Sandwich Especial</span><span class="precio">S/ 10</span></li>
+            <li><span>Desayuno Completo</span><span class="precio">S/ 15</span></li>
+          </ul>
+          <span class="promo-tag">☀️ Desayuno antes de las 10AM: 20% dto.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA INSCRIPCIÓN -->
+<div id="page-inscripcion" class="page">
+  <div class="inscripcion-section">
+    <div class="section-header">
+      <div class="section-label">Registro Oficial</div>
+      <h2 class="section-title">Inscripción de <span>Equipos</span></h2>
+    </div>
+    <div class="form-card" id="formCard">
+      <div class="form-section-title">📋 Datos del Equipo</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre del Equipo *</label>
+          <input type="text" id="nombreEquipo" placeholder="Ej: Los Campeones FC">
+        </div>
+        <div class="form-group">
+          <label>Categoría *</label>
+          <select id="categoriaEquipo">
+            <option value="">Seleccionar categoría</option>
+            <option value="masculino">Fútbol Masculino</option>
+            <option value="femenino">Fútbol Femenino</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre del Delegado *</label>
+          <input type="text" id="delegadoNombre" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Número de Contacto *</label>
+          <input type="tel" id="delegadoContacto" placeholder="Ej: 999 888 777">
+        </div>
+      </div>
+
+      <div class="form-section-title" style="margin-top:2rem;">👥 Jugadores Titulares (6)</div>
+      <table class="jugadores-table">
+        <thead><tr><th>#</th><th>Nombre Completo</th><th>Tipo</th></tr></thead>
+        <tbody id="titulares-tbody">
+          <tr><td>1</td><td><input type="text" placeholder="Nombre completo" id="j1"></td><td><span class="tipo-tag tipo-titular">Titular</span></td></tr>
+          <tr><td>2</td><td><input type="text" placeholder="Nombre completo" id="j2"></td><td><span class="tipo-tag tipo-titular">Titular</span></td></tr>
+          <tr><td>3</td><td><input type="text" placeholder="Nombre completo" id="j3"></td><td><span class="tipo-tag tipo-titular">Titular</span></td></tr>
+          <tr><td>4</td><td><input type="text" placeholder="Nombre completo" id="j4"></td><td><span class="tipo-tag tipo-titular">Titular</span></td></tr>
+          <tr><td>5</td><td><input type="text" placeholder="Nombre completo" id="j5"></td><td><span class="tipo-tag tipo-titular">Titular</span></td></tr>
+          <tr><td>6</td><td><input type="text" placeholder="Nombre completo" id="j6"></td><td><span class="tipo-tag tipo-titular">Titular</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="form-section-title">🔄 Jugadores Suplentes (2)</div>
+      <table class="jugadores-table">
+        <thead><tr><th>#</th><th>Nombre Completo</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td>7</td><td><input type="text" placeholder="Nombre completo" id="j7"></td><td><span class="tipo-tag tipo-suplente">Suplente</span></td></tr>
+          <tr><td>8</td><td><input type="text" placeholder="Nombre completo" id="j8"></td><td><span class="tipo-tag tipo-suplente">Suplente</span></td></tr>
+        </tbody>
+      </table>
+
+      <button class="form-submit" onclick="enviarInscripcion()">📨 Enviar Inscripción</button>
+    </div>
+    <div class="form-card form-success" id="formSuccess">
+      <div class="success-icon">✅</div>
+      <h3>¡Inscripción Exitosa!</h3>
+      <p id="successMsg">Tu equipo ha sido registrado correctamente.</p>
+      <button class="form-submit" style="margin-top:1.5rem;" onclick="resetForm()">Inscribir Otro Equipo</button>
+    </div>
+  </div>
+</div>
+
+<!-- PÁGINA ADMIN -->
+<div id="page-admin" class="page">
+  <!-- Login -->
+  <div class="admin-login" id="adminLogin">
+    <div class="login-card">
+      <h2>🔐 Panel Admin</h2>
+      <p>Acceso exclusivo para administradores del campeonato.</p>
+      <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" id="loginUser" placeholder="Ingresa tu usuario" onkeypress="if(event.key==='Enter')doLogin()">
+      </div>
+      <div style="margin-top:1rem;" class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="loginPass" placeholder="Ingresa tu contraseña" onkeypress="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="login-error" id="loginError">⚠️ Usuario o contraseña incorrectos.</div>
+      <button class="login-btn" onclick="doLogin()">Ingresar al Panel</button>
+      <p style="margin-top:1rem;font-size:0.75rem;color:var(--texto2);text-align:center;">Usuario: admin | Contraseña: copa2025</p>
+    </div>
+  </div>
+
+  <!-- Panel -->
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <h2>⚽ Panel de Administración</h2>
+      <button class="admin-logout" onclick="doLogout()">Cerrar Sesión</button>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Equipos</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">registrados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Masculino</div>
+        <div class="stat-value" id="statMasc">0</div>
+        <div class="stat-sub">equipos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Femenino</div>
+        <div class="stat-value" id="statFem">0</div>
+        <div class="stat-sub">equipos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Jugadores</div>
+        <div class="stat-value" id="statJugadores">0</div>
+        <div class="stat-sub">inscritos</div>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchEquipo" placeholder="🔍 Buscar equipo por nombre..." oninput="filterEquipos()">
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table" id="adminTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Equipo</th>
+            <th>Categoría</th>
+            <th>Delegado</th>
+            <th>Contacto</th>
+            <th>Jugadores</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="adminTableBody">
+        </tbody>
+      </table>
+      <div class="admin-empty" id="adminEmpty">
+        <div class="big">SIN EQUIPOS</div>
+        <p>Aún no hay equipos inscritos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALLE -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-header">
+      <h3 id="modalTitle">—</h3>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-section">
+      <h4>Información del Equipo</h4>
+      <div class="modal-info-row"><span class="key">Categoría</span><span id="mCategoria">—</span></div>
+      <div class="modal-info-row"><span class="key">Delegado</span><span id="mDelegado">—</span></div>
+      <div class="modal-info-row"><span class="key">Contacto</span><span id="mContacto">—</span></div>
+      <div class="modal-info-row"><span class="key">Fecha Inscripción</span><span id="mFecha">—</span></div>
+    </div>
+    <div class="modal-section">
+      <h4>Jugadores Titulares</h4>
+      <div class="modal-jugadores-grid" id="mTitulares"></div>
+    </div>
+    <div class="modal-section">
+      <h4>Jugadores Suplentes</h4>
+      <div class="modal-jugadores-grid" id="mSuplentes"></div>
+    </div>
+    <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+      <button class="btn-pdf" style="padding:0.65rem 1.5rem;font-size:0.85rem;" onclick="downloadPDF(currentEquipoIdx)">📄 Descargar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ====== STATE ======
+let equipos = JSON.parse(localStorage.getItem('copadorada_equipos') || '[]');
+let adminLoggedIn = false;
+let currentEquipoIdx = null;
+
+// ====== NAV ======
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page)?.classList.add('active');
+  window.scrollTo(0, 0);
+  if (page === 'admin') renderAdmin();
+}
+function toggleMobileNav() { const m = document.getElementById('navMobile'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
+function closeMobileNav() { document.getElementById('navMobile').style.display = 'none'; }
+function scrollToGallery() { document.getElementById('gallerySection').scrollIntoView({ behavior: 'smooth' }); }
+
+// ====== TABS ======
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ====== INSCRIPCION ======
+function enviarInscripcion() {
+  const nombre = document.getElementById('nombreEquipo').value.trim();
+  const categoria = document.getElementById('categoriaEquipo').value;
+  const delegado = document.getElementById('delegadoNombre').value.trim();
+  const contacto = document.getElementById('delegadoContacto').value.trim();
+  if (!nombre || !categoria || !delegado || !contacto) { showToast('⚠️ Completa todos los campos obligatorios.'); return; }
+  const titulares = [];
+  for (let i = 1; i <= 6; i++) {
+    const v = document.getElementById('j' + i).value.trim();
+    if (!v) { showToast('⚠️ Ingresa el nombre del jugador titular #' + i); return; }
+    titulares.push(v);
+  }
+  const suplentes = [];
+  for (let i = 7; i <= 8; i++) {
+    const v = document.getElementById('j' + i).value.trim();
+    if (!v) { showToast('⚠️ Ingresa el nombre del jugador suplente #' + (i - 6)); return; }
+    suplentes.push(v);
+  }
+  const equipo = { nombre, categoria, delegado, contacto, titulares, suplentes, fecha: new Date().toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' }) };
+  equipos.push(equipo);
+  localStorage.setItem('copadorada_equipos', JSON.stringify(equipos));
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+  document.getElementById('successMsg').textContent = '¡El equipo "' + nombre + '" ha sido registrado correctamente en la Copa Dorada 2025!';
+  updateHeroCount();
+}
+function resetForm() {
+  document.getElementById('formCard').style.display = 'block';
+  document.getElementById('formSuccess').style.display = 'none';
+  document.getElementById('nombreEquipo').value = '';
+  document.getElementById('categoriaEquipo').value = '';
+  document.getElementById('delegadoNombre').value = '';
+  document.getElementById('delegadoContacto').value = '';
+  for (let i = 1; i <= 8; i++) document.getElementById('j' + i).value = '';
+}
+function updateHeroCount() {
+  document.getElementById('heroTeamCount').textContent = equipos.length;
+}
+
+// ====== ADMIN ======
+function doLogin() {
+  const u = document.getElementById('loginUser').value;
+  const p = document.getElementById('loginPass').value;
+  if (u === 'admin' && p === 'copa2025') {
+    adminLoggedIn = true;
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    renderAdmin();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function doLogout() {
+  adminLoggedIn = false;
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').style.display = 'none';
+}
+function renderAdmin() {
+  if (!adminLoggedIn) return;
+  equipos = JSON.parse(localStorage.getItem('copadorada_equipos') || '[]');
+  const masc = equipos.filter(e => e.categoria === 'masculino').length;
+  const fem = equipos.filter(e => e.categoria === 'femenino').length;
+  document.getElementById('statTotal').textContent = equipos.length;
+  document.getElementById('statMasc').textContent = masc;
+  document.getElementById('statFem').textContent = fem;
+  document.getElementById('statJugadores').textContent = equipos.length * 8;
+  renderTable(equipos);
+}
+function renderTable(lista) {
+  const tbody = document.getElementById('adminTableBody');
+  const empty = document.getElementById('adminEmpty');
+  if (!lista.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = lista.map((e, i) => {
+    const realIdx = equipos.indexOf(e);
+    const cat = e.categoria === 'masculino' ? '<span class="badge badge-jugado">Masculino</span>' : '<span class="badge badge-pendiente">Femenino</span>';
+    return '<tr><td style="color:var(--texto2)">' + (realIdx + 1) + '</td><td><strong>' + e.nombre + '</strong></td><td>' + cat + '</td><td>' + e.delegado + '</td><td>' + e.contacto + '</td><td style="color:var(--verde2)">' + (e.titulares.length + e.suplentes.length) + ' jugadores</td><td style="display:flex;gap:0.4rem;flex-wrap:wrap"><button class="btn-ver" onclick="verEquipo(' + realIdx + ')">👁 Ver</button><button class="btn-pdf" onclick="downloadPDF(' + realIdx + ')">📄 PDF</button></td></tr>';
+  }).join('');
+}
+function filterEquipos() {
+  const q = document.getElementById('searchEquipo').value.toLowerCase();
+  const filtered = equipos.filter(e => e.nombre.toLowerCase().includes(q));
+  renderTable(filtered);
+}
+
+// ====== MODAL ======
+function verEquipo(idx) {
+  currentEquipoIdx = idx;
+  const e = equipos[idx];
+  document.getElementById('modalTitle').textContent = '⚽ ' + e.nombre;
+  document.getElementById('mCategoria').textContent = e.categoria === 'masculino' ? 'Fútbol Masculino' : 'Fútbol Femenino';
+  document.getElementById('mDelegado').textContent = e.delegado;
+  document.getElementById('mContacto').textContent = e.contacto;
+  document.getElementById('mFecha').textContent = e.fecha;
+  document.getElementById('mTitulares').innerHTML = e.titulares.map((j, i) => '<div class="modal-jugador"><span class="num">#' + (i + 1) + '</span>' + j + '</div>').join('');
+  document.getElementById('mSuplentes').innerHTML = e.suplentes.map((j, i) => '<div class="modal-jugador"><span class="num">#' + (i + 7) + '</span>' + j + ' <span class="tipo">Suplente</span></div>').join('');
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalBtn(); }
+function closeModalBtn() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+// ====== PDF ======
+function downloadPDF(idx) {
+  const { jsPDF } = window.jspdf;
+  const e = equipos[idx];
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageW = 210, pageH = 297, margin = 20;
+
+  // Background header
+  doc.setFillColor(13, 13, 13);
+  doc.rect(0, 0, pageW, 50, 'F');
+  doc.setFillColor(26, 107, 46);
+  doc.rect(0, 47, pageW, 3, 'F');
+
+  // Header text
+  doc.setTextColor(245, 197, 24);
+  doc.setFontSize(28);
+  doc.setFont('helvetica', 'bold');
+  doc.text('COPA DORADA 2025', pageW / 2, 22, { align: 'center' });
+  doc.setFontSize(11);
+  doc.setTextColor(176, 176, 154);
+  doc.text('FICHA DE INSCRIPCIÓN OFICIAL', pageW / 2, 32, { align: 'center' });
+  doc.setTextColor(78, 221, 116);
+  doc.text('Campeonato de Fútbol Comunitario', pageW / 2, 41, { align: 'center' });
+
+  // Team name banner
+  doc.setFillColor(26, 107, 46);
+  doc.roundedRect(margin, 58, pageW - margin * 2, 18, 3, 3, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text(e.nombre.toUpperCase(), pageW / 2, 70, { align: 'center' });
+
+  // Info section
+  let y = 88;
+  const drawSection = (title) => {
+    doc.setFillColor(240, 240, 235);
+    doc.rect(margin, y, pageW - margin * 2, 7, 'F');
+    doc.setTextColor(26, 107, 46);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text(title, margin + 3, y + 5);
+    y += 10;
+  };
+  const drawRow = (label, value) => {
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text(label + ':', margin + 3, y);
+    doc.setTextColor(30, 30, 30);
+    doc.setFont('helvetica', 'bold');
+    doc.text(value || '—', margin + 40, y);
+    y += 7;
+  };
+
+  drawSection('INFORMACIÓN DEL EQUIPO');
+  drawRow('Equipo', e.nombre);
+  drawRow('Categoría', e.categoria === 'masculino' ? 'Fútbol Masculino' : 'Fútbol Femenino');
+  drawRow('Delegado', e.delegado);
+  drawRow('Contacto', e.contacto);
+  drawRow('Fecha Inscripción', e.fecha);
+  y += 3;
+
+  drawSection('JUGADORES TITULARES');
+  e.titulares.forEach((j, i) => {
+    if (i % 2 === 0) { doc.setFillColor(252, 252, 250); doc.rect(margin, y - 4, pageW - margin * 2, 7, 'F'); }
+    doc.setTextColor(39, 168, 68);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text('#' + (i + 1), margin + 3, y);
+    doc.setTextColor(30, 30, 30);
+    doc.setFont('helvetica', 'normal');
+    doc.text(j, margin + 12, y);
+    doc.setTextColor(100, 100, 100);
+    doc.text('TITULAR', pageW - margin - 20, y);
+    y += 7;
+  });
+  y += 3;
+
+  drawSection('JUGADORES SUPLENTES');
+  e.suplentes.forEach((j, i) => {
+    doc.setFillColor(252, 252, 250);
+    doc.rect(margin, y - 4, pageW - margin * 2, 7, 'F');
+    doc.setTextColor(245, 197, 24);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text('#' + (i + 7), margin + 3, y);
+    doc.setTextColor(30, 30, 30);
+    doc.setFont('helvetica', 'normal');
+    doc.text(j, margin + 12, y);
+    doc.setTextColor(100, 100, 100);
+    doc.text('SUPLENTE', pageW - margin - 20, y);
+    y += 7;
+  });
+
+  // Footer
+  doc.setFillColor(13, 13, 13);
+  doc.rect(0, pageH - 20, pageW, 20, 'F');
+  doc.setTextColor(176, 176, 154);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Copa Dorada 2025 — Documento oficial de inscripción', pageW / 2, pageH - 10, { align: 'center' });
+  doc.text('Estadio Municipal — 15 de julio de 2025', pageW / 2, pageH - 5, { align: 'center' });
+
+  doc.save('inscripcion_' + e.nombre.replace(/\s+/g, '_') + '.pdf');
+  showToast('📄 PDF descargado exitosamente.');
+}
+
+// ====== TOAST ======
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ====== INIT ======
+updateHeroCount();
+</script>
+</body>
+</html>
